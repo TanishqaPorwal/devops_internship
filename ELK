@@ -1,0 +1,70 @@
+1. Install java  
+    sudo apt-get install openjdk-8-jdk
+
+2. Install Nginx
+    sudo apt-get install nginx
+    
+3. Add Elastic Repository
+     wget -qO - https://artifacts.elastic.co/GPG-KEY-elastics earch | sudo apt-key add -
+ 
+ 4. Install the apt-transport-https package:
+      sudo apt-get install apt-transport-https
+      
+ 5. Add the Elastic repository to your system’s repository list:
+      echo "deb https://artifacts.elastic.co/packages/7.x/apt stable main" | sudo tee –a /etc/apt/sources.list.d/elastic-7.x.list
+      
+ 6. Install Elasticsearch
+      sudo apt-get update
+      sudo apt-get install elasticsearch
+ 
+ 7. Update elasticsearch yml file
+       sudo nano /etc/elasticsearch/elasticsearch.yml
+       
+ 8. Update network host, http.port. , discovery.type as mentioned
+       network host: 0.0.0.0
+       http.port: 9200
+       discovery.type: single-node
+      
+ 9. Update the jvm heapsize
+       sudo nano /etc/elasticsearch/jvm.options
+       -Xms512m
+       -Xms512m
+       
+ 10. Start elasticsearch
+       sudo service elasticsearch start
+       
+ 11. Enable Elasticsearch to start on boot
+       sudo systemctl enable elasticsearch.service
+       
+ 12. Test using curl command
+       curl -X GET "localhost:9200"
+       
+ 13. Install Kibana 
+       sudo apt-get install kibana
+       
+ 14. Open the kibana.yml configuration file for editing
+       sudo nano /etc/kibana/kibana.yml
+  # Update server.port, server.host, server.name, elasticsearch.host
+  # NOTE: server.host will be the private IP Address of your ec2 instance
+         
+         server.port: 5601
+         server.host: "172.30.21.123"
+         server.name: "172.30.21.123"
+         elasticsearch.host: "http://localhost:9200"
+         
+     sudo systemctl start kibana
+     sudo systemctl enable kibana
+   
+  15. Allow Traffic on Port 5601 
+       sudo ufw allow 5601/tcp
+       
+  16. TestKibana
+        http://public_ip_address:5601
+        
+  17. Install Logstash
+         sudo apt-get install logstash
+         sudo systemctl start logstash
+         sudo systemctl enable logstash
+         
+         
+ 
