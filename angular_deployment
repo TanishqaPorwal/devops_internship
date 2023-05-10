@@ -1,0 +1,71 @@
+Manually Building the angular project 
+
+1.Update the system
+   sudo apt-get upgrade 
+   sudo apt-get update
+
+2.Install nodejs 14
+    curl -sL https://deb.nodesource.com/setup_14.x | sudo bash -
+    cat /etc/apt/sources.list.d/nodesource.list
+    sudo apt -y install nodejs
+    node -v
+    
+3.NPM installation
+    sudo apt install npm
+    npm -v
+   
+4.Install angular cli
+    sudo npm install -g @angular/cli 
+    ng version
+    
+#ALl the compatible version
+#Angular CLI: 15.2.3
+#Node: 14.21.3
+#Package Manager: npm 6.14.18 OS: linux x64
+
+5.Clone repo
+    git clone https://github.com/AndrewJBateman/angular-website-exampl e.git
+
+6.Go inside the repo
+    cd angular-website-example/
+    npm install
+
+7.Build the command with the help of build command 
+    ng build
+    ng serve
+    
+8.Nginx
+   sudo apt-get update
+   sudo apt-get install nginx
+   nginx -v
+   sudo systemctl status nginx
+    
+9.Make the directory and keep the app in the directory
+   sudo mkdir/var/www/angularprod/angular-app 
+  
+10.Create server block 
+   sudo nano /etc/nginx/sites-available/example1.conf
+   sudo nano /etc/nginx/sites-available/example2.conf
+   
+11.Add the following
+
+     —-----First—-----
+     server { listen 80;
+     server_name example1.com;
+     location / { root
+     /var/www/angularprod/angular-website-example/dist/websitePrac tise;
+     index index.html;
+     } }
+     
+     —-------Second—-----
+     server { listen 81;
+     server_name example2.com;
+     location / { root
+     /var/www/angularstaging/angular-website-example/dist/websiteP ractise;
+     index index.html;}}
+    
+12.Link it
+    sudo ln -s /etc/nginx/sites-available/example1.conf /etc/nginx/sites-enabled/
+    
+13.Restart nginx
+    sudo systemctl restart nginx
