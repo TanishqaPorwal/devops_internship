@@ -1,0 +1,51 @@
+Create a shell script to find the disk space and send the details on your email
+
+  1. Createtheshellscript
+       sudo vim /etc./tanishqaporwal/check_disk.sh
+
+  2. Addthescript
+   
+       #!/bin/bash
+       # Store the output of the 'df' 
+       DISK_USAGE=$(df -h)
+       # Store the current date 
+       CURRENT_DATE=$(date)
+       # Define the receiver email address
+       EMAIL_ADDRESS="tanyporwal17@gmail.com"
+       # Create a temporary file
+       EMAIL_FILE=$(mktemp)
+       echo -e "Subject: Disk Usage Report\n\nDisk Usage Report as of $CURRENT_DATE\n\n$DISK_USAGE" > $EMAIL_FILE
+       # Send email using the 'mail' command 
+       mail -s "Disk Usage Report"
+       $EMAIL_ADDRESS < $EMAIL_FILE
+       # confirm message
+       echo "Disk usage report sent to $EMAIL_ADDRESS"
+       # delete temp file 
+       rm $EMAIL_FILE
+
+   3. Makethescriptexecutable
+       sudo chmod +x /home/tanishqaporwal/check_disk.sh
+
+   4. Executethescript
+       sh check_disk.sh
+       
+Create a shell script to find the ram usage and send the details on your email  
+
+   #!/bin/bash
+   RAM_USAGE=$(free -h) CURRENT_DATE=$(date) EMAIL_ADDRESS="recipient@example.com"
+   EMAIL_FILE=$(mktemp)
+   echo -e "Subject: RAM Usage Report\n\nRAM Usage Report as of $CURRENT_DATE\n\n$RAM_USAGE" > $EMAIL_FILE
+   mail -s "RAM Usage Report" $EMAIL_ADDRESS < $EMAIL_FILE echo "RAM usage report sent to $EMAIL_ADDRESS"
+   rm $EMAIL_FILE
+   
+
+Create a shell script to find the CPU usage and send the details on your email 
+
+    #!/bin/bash
+    CPU_USAGE=$(top -bn1 | grep "Cpu(s)" | \sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1"%"}')
+    CURRENT_DATE=$(date) EMAIL_ADDRESS="recipient@example.com"
+    EMAIL_FILE=$(mktemp)
+    echo -e "Subject: CPU Usage Report\n\nCPU Usage Report as of $CURRENT_DATE\n\n$CPU_USAGE" > $EMAIL_FILE
+    mail -s "CPU Usage Report" $EMAIL_ADDRESS < $EMAIL_FILE
+    echo "CPU usage report sent to $EMAIL_ADDRESS" rm $EMAIL_FILE
+ 
