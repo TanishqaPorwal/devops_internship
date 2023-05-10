@@ -1,0 +1,54 @@
+1.Installing Node.js
+   curl -sL https://deb.nodesource.com/setup_14.x -o nodesource_setup.sh
+   sudo bash nodesource_setup.sh
+   sudo apt install nodejs
+   sudo apt install build-essential
+   
+2.Creating a Node.js Application
+   cd~
+   nano hello.js
+   
+   // write this script
+      const http = require('http');
+      const hostname = 'localhost'; const port = 3000;
+      const server = http.createServer((req, res) => { 
+      res.statusCode = 200; 
+      res.setHeader('Content-Type', 'text/plain'); 
+      res.end('Hello World!\n');
+      });
+      
+      server.listen(port, hostname, () => {
+      console.log(`Server running at http://${hostname}:${port}/`);
+      });
+   // end of script
+   
+node hello.js
+   
+3.Installing PM2
+   sudo npm install pm2@latest -g
+   pm2 start hello.js
+   pm2 startup systemd
+   sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup
+   systemd -u ubuntu --hp /home/ubuntu
+   pm2 save
+   systemctl status pm2-ubuntu
+   
+4.Setting Up Nginx as a Reverse Proxy Server
+   sudo apt update
+   sudo apt install nginx
+   sudo nano /etc/nginx/sites-available/nodeexample
+   
+   // script
+    server {
+    listen 80;
+    listen [::]:80;
+    server_name nodeexample.com; location / {
+    root /home/ubuntu; index hello.js;
+    proxy_pass http://localhost:3000; proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade; proxy_set_header Connection 'upgrade'; proxy_set_header Host $host; proxy_cache_bypass $http_upgrade;
+    } }
+  //end script
+ 
+5.Restart nginx 
+ sudo nginx -t
+ sudo systemctl restart nginx
